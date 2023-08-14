@@ -7,7 +7,7 @@ router.get('/ads', ads.getAll);
 router.get('/ads/:id', ads.getById);
 router.get('/ads/search/:searchPhrase', ads.getBySearchPhrase);
 router.post('/ads', ads.addNew);
-router.detele('/ads/:id', ads.removeById);
 router.put('/ads/:id', ads.modifyById);
+router.delete('/ads/:id', ads.removeById);
 
 module.exports = router;
