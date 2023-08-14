@@ -1,1 +1,0 @@
-const Ad = require('../models/User.model');

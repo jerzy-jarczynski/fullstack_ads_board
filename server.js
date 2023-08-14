@@ -41,7 +41,6 @@ app.use(express.static(path.join(__dirname, '/client/build')));
 
 // add routes
 app.use('/api', require('./routes/ads.routes'));
-app.use('/api', require('./routes/users.routes'));
 app.use('/auth', require('./routes/auth.routes'));
 
 // if any other link just serve react app
