@@ -1,56 +1,69 @@
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
-const mongoose = require('mongoose');
-const connectToDB = require('./db');
+const { connectToDB, dbUri } = require('./db');
 const helmet = require('helmet');
+const session = require('express-session');
+const MongoStore = require('connect-mongo');
 
-// start express server
 const app = express();
-const server = app.listen(process.env.PORT || 8000, () => {
-  console.log('Server is running...');
-});
 
-// connect to DB
-connectToDB();
-
-// add middleware
-const allowedOrigins = [
-  'http://localhost:3000',
-  'http://localhost:8000',
-];
+// Middleware
+const allowedOrigins = ['http://localhost:3000', 'http://localhost:8000'];
 
 app.use(cors({
-  origin: function(origin, callback){
-
-    if(!origin) return callback(null, true);
-    if(allowedOrigins.indexOf(origin) === -1){
+  origin: function(origin, callback) {
+    if (!origin) return callback(null, true);
+    if (allowedOrigins.indexOf(origin) === -1) {
       const msg = 'The CORS policy for this site does not allow external access...';
       return callback(new Error(msg), false);
     }
     return callback(null, true);
-  }
+  },
+  credentials: true  // this allows session cookies to be sent across origins
 }));
+
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(helmet());
 
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, '/public')));
-app.use(express.static(path.join(__dirname, '/client/build')));
+const startServer = async () => {
+  try {
+    await connectToDB();
+    
+    const store = new MongoStore({
+      mongoUrl: dbUri
+    });
+    
+    app.use(session({ 
+      secret: 'xyz567', 
+      store: store, 
+      resave: false, 
+      saveUninitialized: false 
+    }));    
 
-// add routes
-app.use('/api', require('./routes/ads.routes'));
-app.use('/auth', require('./routes/auth.routes'));
+    // Serve static files
+    app.use(express.static(path.join(__dirname, '/public')));
+    app.use(express.static(path.join(__dirname, '/client/build')));
 
-// if any other link just serve react app
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname + '/client/build/index.html'));
-});
+    // Routes
+    app.use('/api', require('./routes/ads.routes'));
+    app.use('/auth', require('./routes/auth.routes'));
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(__dirname + '/client/build/index.html'));
+    });
+    app.use((req, res) => {
+      res.status(404).send({ message: 'Not found...' });
+    });
 
-// if bad link return 404
-app.use((req, res) => {
-  res.status(404).send({ message: 'Not found...' });
-});
+    app.listen(process.env.PORT || 8000, () => {
+      console.log('Server is running...');
+    });
+  } catch (error) {
+    console.error("Failed to start the server:", error);
+  }
+};
 
-module.exports = server;
+startServer();
+
+module.exports = app;

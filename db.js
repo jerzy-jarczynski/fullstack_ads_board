@@ -10,20 +10,25 @@ else if (NODE_ENV === 'test') dbUri = 'mongodb://localhost:27017/adsDBTest';
 else dbUri = 'mongodb://localhost:27017/adsDB';
 
 const connectToDB = () => {
-
-  try {
+  return new Promise((resolve, reject) => {
     mongoose.connect(dbUri, { useNewUrlParser: true, useUnifiedTopology: true });
     const db = mongoose.connection;
-  
+    
     db.once('open', () => {
-      if (NODE_ENV !== "test") console.log("Connected to the database");
+      if (NODE_ENV !== "test") {
+        console.log("Connected to the database");
+        resolve();
+      }
     });
-    db.on('error', err => console.log('Error ' + err));
-  } catch (err) {
-    if(process.env.debug === true) console.log(err);
-    else console.log('Couldn\'t connect to db...');
-  }
-  
-}
+    
+    db.on('error', err => {
+      console.log('Error ' + err);
+      reject(err);
+    });
+  });
+};
 
-module.exports = connectToDB;
+module.exports = {
+  connectToDB,
+  dbUri  // Exporting the dbUri
+};
