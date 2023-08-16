@@ -1,6 +1,7 @@
 const User = require('../models/User.model');
 const bcrypt = require('bcryptjs');
 const getImageFileType = require('../utils/getImageFileType');
+const fs = require("fs");
 
 exports.register = async (req, res) => {
   try {
@@ -18,6 +19,7 @@ exports.register = async (req, res) => {
       const user = await User.create({ login, password: await bcrypt.hash(password, 10), avatar: req.file.filename });
       res.status(201).send({ message: 'User created ' + user.login });
     } else {
+      fs.unlinkSync(`./public/uploads/${req.file.filename}`);
       res.status(400).send({ message: 'Bad request' });
     }
   } catch (err) {
