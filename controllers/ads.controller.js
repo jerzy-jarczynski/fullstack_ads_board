@@ -65,6 +65,8 @@ exports.addNew = async (req, res) => {
     const escapedPrice = escapeHtml(price);
     const escapedLocation = escapeHtml(location);
 
+    console.log('user in session: ', req.session.user.id);
+
     if (
       escapedTitle 
       && typeof escapedTitle === "string"
@@ -89,7 +91,7 @@ exports.addNew = async (req, res) => {
         price: escapedPrice,
         image: req.file.filename,
         location: escapedLocation,
-        userId: req.session.user.id
+        seller: req.session.user.id
       });
       
       await newAd.save();
@@ -98,7 +100,8 @@ exports.addNew = async (req, res) => {
       if (req.file) {
         fs.unlinkSync(`${__dirname}/../public/uploads/${req.file.filename}`);
       }
-      res.status(400).json({ message: "Bad request" });
+      // I am getting this
+      res.status(400).json({ message: "Bad request test" });
     }
   } catch (err) {
     console.error("Error while adding or updating the ad:", err); // It's good to log the error for debugging
