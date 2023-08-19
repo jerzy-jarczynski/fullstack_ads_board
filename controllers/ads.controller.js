@@ -27,28 +27,39 @@ exports.getById = async (req, res) => {
 
 exports.getBySearchPhrase = async (req, res) => {
   const searchPhrase = req.params.searchPhrase;
-  
+
   // Validation
   if (!searchPhrase || searchPhrase.trim().length === 0) {
     return res.status(400).json({ message: "Search phrase is required and cannot be empty." });
   }
-  
-  // Construct the query
-  const query = {
-    $or: [
-      { title: { $regex: searchPhrase, $options: 'i' } },
-      { content: { $regex: searchPhrase, $options: 'i' } },
-      { location: { $regex: searchPhrase, $options: 'i' } },
-      { seller: { $regex: searchPhrase, $options: 'i' } },
-    ],
-  };
-  
+
+  // Construct the aggregation
+  const aggregation = [
+    {
+      $lookup: {
+        from: "users", // Adjust this to the actual name of your users collection
+        localField: "seller",
+        foreignField: "_id",
+        as: "sellerData"
+      }
+    },
+    {
+      $match: {
+        $or: [
+          { title: { $regex: searchPhrase, $options: 'i' } },
+          { content: { $regex: searchPhrase, $options: 'i' } },
+          { location: { $regex: searchPhrase, $options: 'i' } },
+          { "sellerData.login": { $regex: searchPhrase, $options: 'i' } }, // Assuming 'name' is the field you want to search in User collection
+        ]
+      }
+    }
+  ];
+
   try {
-    const results = await Ad.find(query).populate('seller');
+    const results = await Ad.aggregate(aggregation);
     res.json({ results: results });
-  } 
-  catch(err) {
-    console.error("Error fetching advertisements:", err); // Logging the error for debugging
+  } catch (err) {
+    console.error("Error fetching advertisements:", err);
     res.status(500).json({ message: "An error occurred while processing your request." });
   }
 };
