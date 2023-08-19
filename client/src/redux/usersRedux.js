@@ -2,7 +2,7 @@ import axios from "axios";
 import { API_AUTH_URL } from "../config";
 
 // SELECTORS
-export const getUser = ({ user }) => user.data;
+export const getUser = ({ user }) => user ? user.data : null;
 export const getUserError = ({ user }) => user.error;
 
 // ACTION TYPES

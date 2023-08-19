@@ -1,11 +1,11 @@
 import AdsBoard from "../../features/AdsBoard/AdsBoard";
-import SearchBar from "../../features/SearchBar/SearchBar";
+import AdsBar from "../../features/AdsBar/AdsBar";
 
 const Home = () => {
   
   return (
     <div>
-      <SearchBar />
+      <AdsBar />
       <AdsBoard />
     </div>
   );
