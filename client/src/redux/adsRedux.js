@@ -3,7 +3,8 @@ import { API_URL } from "../config";
 
 // SELECTORS
 export const getAds = ({ ads }) => ads.data;
-export const getAdById = ({ ads }, id) => ads.data.find((ad) => ad._id === id);
+export const getAdById = ({ ads }, id) => 
+  ads && Array.isArray(ads.data) ? ads.data.find((ad) => ad._id === id) : null;
 export const getAdsError = ({ ads }) => ads.error;
 
 // ACTIONS

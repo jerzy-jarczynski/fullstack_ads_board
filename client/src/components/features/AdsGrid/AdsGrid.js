@@ -27,22 +27,7 @@ const AdsGrid = ({ ads }) => {
 };
 
 AdsGrid.propTypes = {
-  ads: PropTypes.arrayOf(
-    PropTypes.shape({
-      description: PropTypes.string,
-      image: PropTypes.string,
-      location: PropTypes.string,
-      price: PropTypes.number,
-      publishDate: PropTypes.string,
-      seller: PropTypes.shape({
-        _id: PropTypes.string,
-        login: PropTypes.string,
-        password: PropTypes.string,
-      }),
-      title: PropTypes.string,
-      _id: PropTypes.string
-    })
-  )
+  ads: PropTypes.array
 };
 
 export default AdsGrid;

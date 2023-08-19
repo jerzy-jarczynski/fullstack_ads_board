@@ -58,9 +58,9 @@ exports.getBySearchPhrase = async (req, res) => {
   try {
     const results = await Ad.aggregate(aggregation);
     res.json({ results: results });
-  } catch (err) {
-    console.error("Error fetching advertisements:", err);
-    res.status(500).json({ message: "An error occurred while processing your request." });
+  } catch(err) {
+    console.error("Error fetching advertisements:", err); // Keep this for logging
+    res.status(500).json({ message: err.message }); // Change this line to provide a detailed error message
   }
 };
   

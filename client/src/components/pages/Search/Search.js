@@ -1,9 +1,9 @@
+import SearchBoard from "../../features/SearchBoard/SearchBoard";
+
 const Search = () => {
   
   return (
-    <div>
-      Search
-    </div>
+    <SearchBoard />
   );
 
 };

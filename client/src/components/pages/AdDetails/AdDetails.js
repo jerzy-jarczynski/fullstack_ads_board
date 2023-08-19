@@ -1,8 +1,10 @@
+import AdOverview from "../../features/AdOverview/AdOverview";
+
 const AdDetails = () => {
   
   return (
     <div>
-      AdDetails
+      <AdOverview />
     </div>
   );
 
