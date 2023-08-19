@@ -1,9 +1,9 @@
-function App() {
-  return (
-    <div className="App">
-      Hello World
-    </div>
-  );
-}
+import MainLayout from "./components/layout/MainLayout/MainLayout";
+
+const App = () => (
+  <MainLayout>
+    Hello World!
+  </MainLayout>
+);
 
 export default App;
