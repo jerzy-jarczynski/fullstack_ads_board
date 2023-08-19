@@ -1,16 +1,25 @@
-import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
-import thunk from 'redux-thunk';
+import { createStore, applyMiddleware, combineReducers, compose } from "redux";
+import thunk from "redux-thunk";
+import initialState from "./initialState";
+import adsReducer from "./adsRedux";
+// import usersReducer from "./usersRedux";
 
-// import reducers
+const subreducers = {
+  ads: adsReducer,
+  // user: usersReducer,
+};
 
-// combine reducers
-const rootReducer = combineReducers({
-});
+const reducer = combineReducers(subreducers);
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
-  rootReducer,
-  composeEnhancers(applyMiddleware(thunk))
+  reducer,
+  initialState,
+  compose(
+    applyMiddleware(thunk),
+    window.__REDUX_DEVTOOLS_EXTENSION__
+      ? window.__REDUX_DEVTOOLS_EXTENSION__()
+      : (f) => f
+  )
 );
 
 export default store;

@@ -65,8 +65,6 @@ exports.addNew = async (req, res) => {
     const escapedPrice = escapeHtml(price);
     const escapedLocation = escapeHtml(location);
 
-    console.log('user in session: ', req.session.user.id);
-
     if (
       escapedTitle 
       && typeof escapedTitle === "string"
