@@ -1,9 +1,9 @@
+import AdDeleteFeature from "../../features/AdDeleteFeature/AdDeleteFeature";
+
 const AdDelete = () => {
   
   return (
-    <div>
-      AdDelete
-    </div>
+    <AdDeleteFeature />
   );
 
 };

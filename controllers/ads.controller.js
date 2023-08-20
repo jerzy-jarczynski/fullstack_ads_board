@@ -76,6 +76,40 @@ exports.addNew = async (req, res) => {
     const escapedPrice = escapeHtml(price);
     const escapedLocation = escapeHtml(location);
 
+    // Add these logs right before the if condition in your `addNew` function
+
+    console.log("Checking title:", escapedTitle, typeof escapedTitle, escapedTitle.length);
+    if (!escapedTitle || typeof escapedTitle !== "string" || escapedTitle.length < 10 || escapedTitle.length > 50) {
+      console.log("Title validation failed");
+    }
+
+    console.log("Checking description:", escapedDescription, typeof escapedDescription, escapedDescription.length);
+    if (!escapedDescription || typeof escapedDescription !== "string" || escapedDescription.length < 20 || escapedDescription.length > 1000) {
+      console.log("Description validation failed");
+    }
+
+    console.log("Checking publishDate:", escapedDate, typeof escapedDate);
+    if (!escapedDate || typeof escapedDate !== "string") {
+      console.log("PublishDate validation failed");
+    }
+
+    console.log("Checking price:", escapedPrice, typeof escapedPrice);
+    if (!escapedPrice || typeof escapedPrice !== "string") { // You might need to adjust this if the price should be a number
+      console.log("Price validation failed");
+    }
+
+    console.log("Checking location:", escapedLocation, typeof escapedLocation);
+    if (!escapedLocation || typeof escapedLocation !== "string") {
+      console.log("Location validation failed");
+    }
+
+    console.log("Checking file:", fileType, req.file);
+    if (!req.file || !['image/png', 'image/jpeg', 'image/gif'].includes(fileType)) {
+      console.log("File validation failed");
+    }
+
+    // ... your existing if condition comes next
+
     if (
       escapedTitle 
       && typeof escapedTitle === "string"

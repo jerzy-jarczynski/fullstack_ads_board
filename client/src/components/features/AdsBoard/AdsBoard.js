@@ -11,7 +11,7 @@ const AdsBoard = () => {
   const reduxAds = useSelector(getAds);
 
   useEffect(() => {
-    if (reduxAds) {
+    if (reduxAds && Array.isArray(reduxAds)) {
       const sortedAds = [...reduxAds].sort((a, b) => new Date(a.publishDate) - new Date(b.publishDate));
       setLocalAds(sortedAds);
     }
