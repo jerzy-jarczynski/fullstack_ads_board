@@ -7,16 +7,24 @@ import { editAdRequest, getAdById, loadAdsRequest } from "../../../redux/adsRedu
 import { useEffect } from "react";
 
 const AdEdit = () => {
-
   const { id } = useParams();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const data = useSelector((state) => getAdById(state, id));
   // const user = useSelector(getUser);
   
   const handleSubmit = (ad) => {
-
+    const formData = new FormData();
+    formData.append("title", ad.title);
+    formData.append("description", ad.description);
+    formData.append("publishDate", ad.publishDate);
+    formData.append("price", ad.price);
+    formData.append("location", ad.location);
+    if (ad.image) {
+      formData.append("image", ad.image);
+    }
+    dispatch(editAdRequest(formData, id));
+    navigate("/");
   };
 
   useEffect(() => {
@@ -44,20 +52,19 @@ const AdEdit = () => {
   return (
     <>
       <Row>
-        <Col>
+        <Col xs={12} md={10} lg={8} className="mx-auto">
           <h1 className="text-center">
             Edit advertisement
           </h1>
         </Col>
       </Row>
       <Row>
-        <Col>
+        <Col xs={12} md={10} lg={8} className="mx-auto">
           <AdAddOrEditForm action={handleSubmit} {...data} />
         </Col>
       </Row>
     </>
   );
-
 };
 
 export default AdEdit;
