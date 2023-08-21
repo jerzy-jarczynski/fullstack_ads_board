@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Form, Button, Image } from "react-bootstrap";
+import { Form, Button, Image, Alert, Spinner } from "react-bootstrap";
+import { API_AUTH_URL } from "../../../config";
 
 const RegisterForm = () => {
   const [formData, setFormData] = useState({
@@ -11,6 +12,7 @@ const RegisterForm = () => {
 
   const [errors, setErrors] = useState({});
   const [avatarPreview, setAvatarPreview] = useState(null);
+  const [status, setStatus] = useState(null); // null, 'loading', 'success', 'serverError', 'loginError'
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -22,6 +24,36 @@ const RegisterForm = () => {
     if (!formData.avatar) newErrors.avatar = "Avatar is required";
 
     setErrors(newErrors);
+
+    if (Object.keys(newErrors).length === 0) {
+
+      const fd = new FormData();
+      fd.append('login', formData.login);
+      fd.append('password', formData.password);
+      fd.append('phoneNumber', formData.phone);
+      fd.append('avatar', formData.avatar);
+
+      const options = {
+        method: 'POST',
+        body: fd,
+      };
+
+      setStatus('loading');
+
+      fetch(`${API_AUTH_URL}/register`, options)
+        .then(res => {
+          if (res.status === 201) {
+            setStatus('success');
+          } else if (res.status === 400) {
+            setStatus('clientError');
+          } else if (res.status === 409) {
+            setStatus('loginError');
+          } else {
+            setStatus('serverError');
+          }
+        })
+
+    }
   };
 
   const handleChange = (e) => {
@@ -42,6 +74,45 @@ const RegisterForm = () => {
 
   return (
     <Form onSubmit={handleSubmit}>
+
+      {
+        status === "success" && (
+          <Alert variant="success">
+            <Alert.Heading>Success!</Alert.Heading>
+            <p>You have been registered! You can now log in...</p>
+          </Alert>
+      )}
+
+      {
+        status === "serverError" && (
+          <Alert variant="danger">
+            <Alert.Heading>Something went wrong...</Alert.Heading>
+            <p>Unexpected error... Try again!</p>
+          </Alert>
+      )}
+
+      {
+        status === "clientError" && (
+          <Alert variant="danger">
+            <Alert.Heading>Not enought data</Alert.Heading>
+            <p>You have to fill all the fields</p>
+          </Alert>
+      )}      
+
+      {
+        status === "loginError" && (
+          <Alert variant="warning">
+            <Alert.Heading>Login already in use</Alert.Heading>
+            <p>You have to use other login.</p>
+          </Alert>
+      )}
+
+      {
+        status === "loading" && (
+          <Spinner animation="border" role="status" className="d-block mx-auto">
+            <span className="visually-hidden">Loading...</span>
+          </Spinner>
+      )}
 
       <Form.Group className="mb-3" controlId="formLogin">
         <Form.Label>Login</Form.Label>
