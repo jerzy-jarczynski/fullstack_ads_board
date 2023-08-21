@@ -19,13 +19,19 @@ export const logOut = () => ({ type: LOG_OUT });
 export const setError = (payload) => ({ type: SET_ERROR, payload });
 
 // THUNKS
-export const loadLoggedUser = () => async (dispatch) => {
-  try {
-    const res = await axios.get(`${API_AUTH_URL}/user`, { withCredentials: true });
-    dispatch(logIn({ login: res.data.login }));
-  } catch (e) {
-    dispatch(setError(e.message));
-  }
+export const loadLoggedUser = () => {
+  return async (dispatch) => {
+    try {
+      let res = await axios.get(`${API_AUTH_URL}/user`, {
+        withCredentials: true,
+      });
+      if (res.data && res.data.login) {
+        dispatch(logIn({ login: res.data.login }));
+      }
+    } catch (e) {
+      console.log("error ", e);
+    }
+  };
 };
 
 // REDUCER

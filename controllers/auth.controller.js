@@ -74,5 +74,9 @@ exports.logout = async (req, res) => {
 };
 
 exports.getUser = async (req, res) => {
-  res.send('Yeah I\'m logged');
+  if (req.session && req.session.user) {
+    res.json(req.session.user);
+  } else {
+    res.status(401).json({ message: "Not logged in" });
+  }
 }
