@@ -1,7 +1,7 @@
 import AdAddOrEditForm from "../../features/AdAddOrEditForm/AdAddOrEditForm";
 import { Row, Col } from "react-bootstrap";
 import { useEffect } from "react";
-// import { getUser } from "../../../redux/usersRedux";
+import { getUser } from "../../../redux/usersRedux";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { addAdRequest } from "../../../redux/adsRedux";
@@ -10,7 +10,7 @@ const AdNew = () => {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  // const user = useSelector(getUser);
+  const user = useSelector(getUser);
 
   const handleSubmit = (ad) => {
     const formData = new FormData();
@@ -23,15 +23,14 @@ const AdNew = () => {
 
     dispatch(addAdRequest(formData));
 
-    // Navigate to home (or somewhere else) after dispatching
     navigate("/");
   };
 
-  // useEffect(() => {
-  //   if (!user) {
-  //     navigate("/");
-  //   }
-  // }, [user, navigate]);
+  useEffect(() => {
+    if (!user) {
+      navigate("/");
+    }
+  }, [user, navigate]);
 
   return (
     <>

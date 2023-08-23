@@ -43,7 +43,10 @@ const startServer = async () => {
       resave: false, 
       saveUninitialized: false,
       cookie: {
+        sameSite: 'lax',
         secure: process.env.NODE_ENV == "production",
+        domain: 'localhost',  // Add this line
+        path: '/',            // Add this line
       },
     }));    
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { IMGS_URL } from "../../../config";
 
-const AdForm = ({ action, ...data }) => {
+const AdAddOrEditForm = ({ action, ...data }) => {
   const initialState = {
     title: data.title || "",
     description: data.description || "",
@@ -30,8 +30,27 @@ const AdForm = ({ action, ...data }) => {
   const validateFields = () => {
     const newErrors = {};
 
+    // Title validation
+    if (!formFields.title) {
+      newErrors.title = "Title is required";
+    } else if (formFields.title.length < 10) {
+      newErrors.title = "Title should be at least 10 characters long";
+    } else if (formFields.title.length > 50) {
+      newErrors.title = "Title should not exceed 50 characters";
+    }
+
+    // Description validation
+    if (!formFields.description) {
+      newErrors.description = "Description is required";
+    } else if (formFields.description.length < 20) {
+      newErrors.description = "Description should be at least 20 characters long";
+    } else if (formFields.description.length > 1000) {
+      newErrors.description = "Description should not exceed 1000 characters";
+    }
+
+    // Other field validations (for fields that are just required)
     for (const field in formFields) {
-      if (!formFields[field]) {
+      if (!newErrors[field] && !formFields[field]) {
         newErrors[field] = `${field.charAt(0).toUpperCase() + field.slice(1)} is required`;
       }
     }
@@ -158,4 +177,4 @@ const AdForm = ({ action, ...data }) => {
   );
 };
 
-export default AdForm;
+export default AdAddOrEditForm;
