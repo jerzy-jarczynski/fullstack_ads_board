@@ -38,7 +38,7 @@ const startServer = async () => {
     });
     
     app.use(session({ 
-      secret: 'xyz567', 
+      secret: process.env.SECRET, 
       store: store, 
       resave: false, 
       saveUninitialized: false,

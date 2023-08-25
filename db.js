@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 
-const uri = `mongodb+srv://anderfor:${process.env.DB_PASS}@kodilla.vpc6m3e.mongodb.net/NewWaveDB?retryWrites=true&w=majority`;
+const uri = `mongodb+srv://anderfor:${process.env.DB_PASS}@kodilla.vpc6m3e.mongodb.net/adsDB?retryWrites=true&w=majority`;
 
 const NODE_ENV = process.env.NODE_ENV;
 let dbUri = '';
