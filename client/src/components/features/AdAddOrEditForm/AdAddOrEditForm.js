@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { IMGS_URL } from "../../../config";
+import { formatDateForInput } from "../../../utils/formatDateForInput";
 
 const AdAddOrEditForm = ({ action, ...data }) => {
+
+  const formattedPublishDate = data.publishDate ? formatDateForInput(data.publishDate) : "";
+
   const initialState = {
     title: data.title || "",
     description: data.description || "",
-    publishDate: data.publishDate || "",
+    publishDate: formattedPublishDate,
     price: data.price || "",
     location: data.location || "",
     image: data.image || null,

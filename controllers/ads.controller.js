@@ -154,7 +154,7 @@ exports.addNew = async (req, res) => {
 
 // PUT
 exports.modifyById = async (req, res) => {
-  const { title, content, publish_date, price, location } = req.body;
+  const { title, description, publishDate, price, location } = req.body;
 
   try {
     const adv = await Ad.findById(req.params.id);
@@ -162,23 +162,24 @@ exports.modifyById = async (req, res) => {
 
     // Input validation and ad ownership check
     const escapedTitle = escapeHtml(title);
-    const escapedContent = escapeHtml(content);
-    const escapedDate = escapeHtml(publish_date);
+    const escapedContent = escapeHtml(description);
+    const escapedDate = escapeHtml(publishDate);
     const escapedPrice = escapeHtml(price);
     const escapedLocation = escapeHtml(location);
 
     if (
       adv
-      && adv.userId === req.session.user.id
+      && String(adv.seller) === String(req.session.user.id)
       && title
-      && content
-      && publish_date
+      && description
+      && publishDate
       && price
       && location
       && (escapedTitle.length >= 10 && escapedTitle.length <= 50)
       && (escapedContent.length >= 20 && escapedContent.length <= 1000)
-      && ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)
+      && (!req.file || (req.file && ['image/png', 'image/jpeg', 'image/gif'].includes(fileType)))
     ) {
+
       if (req.file) {
         // Delete the old image
         fs.unlinkSync(`./public/uploads/${adv.image}`);
