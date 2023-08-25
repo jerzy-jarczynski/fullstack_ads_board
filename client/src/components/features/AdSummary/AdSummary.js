@@ -3,6 +3,7 @@ import Button from 'react-bootstrap/Button';
 import Card from 'react-bootstrap/Card';
 import { IMGS_URL } from "../../../config";
 import { Link } from "react-router-dom";
+import styles from "./AdSummary.module.scss";
 
 const AdSummary = ({ id, title, image, location }) => {
 
@@ -11,7 +12,9 @@ const AdSummary = ({ id, title, image, location }) => {
 
   return (
     <Card className="my-4">
-      <Card.Img variant="top" src={imageSrc} />
+      <div className={styles.imageContainer}>
+        <Card.Img variant="top" src={imageSrc} />
+      </div>
       <Card.Body>
         <Card.Title>{ title }</Card.Title>
         <Card.Text>{ location }</Card.Text>

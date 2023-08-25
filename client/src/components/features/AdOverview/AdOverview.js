@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import { getUser } from "../../../redux/usersRedux";
 import { useEffect } from "react";
 import { formatDate } from "../../../utils/formatDate";
+import styles from "./AdOverview.module.scss";
 
 const AdOverview = () => {
 
@@ -41,7 +42,9 @@ const AdOverview = () => {
         <Card className="mb-4 p-3">
           <Row>
             <Col xs={12} md={6} lg={4}>
-              <Card.Img variant="top" src={adImageSrc} />
+              <div className={styles.imageContainer}>
+                <Card.Img variant="top" src={adImageSrc} />
+              </div>
             </Col>
             <Col xs={12} md={6} lg={8}>
               <Card.Body>

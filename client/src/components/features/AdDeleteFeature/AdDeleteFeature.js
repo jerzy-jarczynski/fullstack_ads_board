@@ -29,9 +29,13 @@ const AdDeleteFeature = () => {
     dispatch(loadAdsRequest());
   }, [dispatch, id, data, navigate, user]);
 
-  const handleSubmit = (id) => {
-    dispatch(removeAdRequest(id));
-    navigate("/");
+  const handleSubmit = async (id) => {
+    try {
+      await dispatch(removeAdRequest(id));
+      navigate("/");
+    } catch (error) {
+      console.error("Failed to remove the ad:", error);
+    }
   };
 
   if (!data) {

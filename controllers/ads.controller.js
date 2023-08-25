@@ -211,9 +211,17 @@ exports.modifyById = async (req, res) => {
 
 // DELETE
 exports.removeById = async (req, res) => {
+
+  console.log(1);
+
   try {
     const adv = await Ad.findById(req.params.id);
-    if(adv && (req.session.userId === adv.seller.toString())) {  // <-- modified here
+
+    console.log(adv);
+    console.log(req.session);
+    console.log(req.session.userId === adv.seller.toString());
+
+    if(adv && (req.session.user.id === adv.seller.toString())) {  // <-- modified here
       // If there's an image, delete it from the filesystem
       if (adv.image) {
         fs.unlinkSync(`./public/uploads/${adv.image}`);
