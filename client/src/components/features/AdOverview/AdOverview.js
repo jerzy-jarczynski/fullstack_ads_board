@@ -41,12 +41,12 @@ const AdOverview = () => {
       <Col xs={12} md={10} lg={8} className="mx-auto">
         <Card className="mb-4 p-3">
           <Row>
-            <Col xs={12} md={6} lg={4}>
+            <Col xs={12} md={6} lg={5}>
               <div className={styles.imageContainer}>
                 <Card.Img variant="top" src={adImageSrc} />
               </div>
             </Col>
-            <Col xs={12} md={6} lg={8}>
+            <Col xs={12} md={6} lg={7}>
               <Card.Body>
                 <Card.Title>Title: {data.title}</Card.Title>
                 <Card.Text>Location: {data.location}</Card.Text>
@@ -56,7 +56,7 @@ const AdOverview = () => {
             </Col>
           </Row>
           {
-            // user && user.login === data.seller.login &&
+            user && user.login === data.seller.login &&
             (
             <Row className="mt-3">
               <Col className="d-flex justify-content-center">
